@@ -1,0 +1,119 @@
+{% extends "base.html" %}
+{% block page_title %}Ganancias{% endblock %}
+{% block topbar_title %}💰 Ganancias{% endblock %}
+{% block topbar_sub %}Cuánto está ganando tu negocio{% endblock %}
+
+{% block content %}
+
+<!-- ================= TARJETAS DE GANANCIAS ================= -->
+<section class="grid grid-4" style="margin-bottom:22px">
+  <div class="stat">
+    <div class="stat-top">
+      <span class="stat-label">Ganancia de hoy</span>
+      <span class="stat-icon">💰</span>
+    </div>
+    <div class="stat-value" id="profitDay">—</div>
+    <div class="stat-foot" id="profitDayFoot">Cargando...</div>
+  </div>
+
+  <div class="stat mint">
+    <div class="stat-top">
+      <span class="stat-label">Ganancia de la semana</span>
+      <span class="stat-icon">📅</span>
+    </div>
+    <div class="stat-value" id="profitWeek">—</div>
+    <div class="stat-foot" id="profitWeekFoot">Cargando...</div>
+  </div>
+
+  <div class="stat gold">
+    <div class="stat-top">
+      <span class="stat-label">Ganancia del mes</span>
+      <span class="stat-icon">🗓️</span>
+    </div>
+    <div class="stat-value" id="profitMonth">—</div>
+    <div class="stat-foot" id="profitMonthFoot">Cargando...</div>
+  </div>
+
+  <div class="stat rose">
+    <div class="stat-top">
+      <span class="stat-label">Total de ventas</span>
+      <span class="stat-icon">🛍️</span>
+    </div>
+    <div class="stat-value" id="profitAll">—</div>
+    <div class="stat-foot" id="profitAllFoot">Cargando...</div>
+  </div>
+</section>
+
+<!-- Mensaje cuando no hay datos -->
+<div class="notice info" id="noDataNotice" style="display:none;margin-bottom:20px">
+  <span>📊</span>
+  <div>
+    <strong>Todavía no hay suficientes datos para mostrar estadísticas.</strong><br>
+    Registra tu primera venta en la sección <a href="/ventas">Ventas</a> y aquí aparecerán
+    tus ganancias y gráficos automáticamente.
+  </div>
+</div>
+
+<!-- ================= GRAFICO DE BARRAS ================= -->
+<div class="card" style="margin-bottom:20px">
+  <div class="card-head">
+    <div>
+      <h2>📈 Ventas de los últimos 7 días</h2>
+      <p>Compara ingresos y ganancias de cada día</p>
+    </div>
+    <div class="row">
+      <span class="tag">💜 Ingresos</span>
+      <span class="tag gold">💛 Ganancia</span>
+    </div>
+  </div>
+  <div class="chart-box" id="weeklyChart">
+    <div class="skeleton" style="height:210px"></div>
+  </div>
+</div>
+
+<div class="grid grid-2">
+  <!-- ================= TOP PRODUCTOS ================= -->
+  <div class="card">
+    <div class="card-head">
+      <div>
+        <h2>🏆 Productos con más ganancia</h2>
+        <p>Dónde se está concentrando tu dinero</p>
+      </div>
+    </div>
+    <div id="profitTopProducts">
+      <div class="skeleton" style="height:120px"></div>
+    </div>
+  </div>
+
+  <!-- ================= RESUMEN DETALLADO ================= -->
+  <div class="card">
+    <div class="card-head">
+      <div>
+        <h2>🧾 Resumen detallado</h2>
+        <p>Ingresos, unidades y gananci por periodo</p>
+      </div>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Periodo</th>
+            <th class="num">Ventas</th>
+            <th class="num">Unidades</th>
+            <th class="num">Ingresos</th>
+            <th class="num">Ganancia</th>
+          </tr>
+        </thead>
+        <tbody id="profitTable">
+          <tr><td colspan="5"><div class="skeleton" style="height:38px"></div></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/profits.js') }}"></script>
+{% endblock %}

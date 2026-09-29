@@ -1,0 +1,118 @@
+{% extends "base.html" %}
+{% block page_title %}Estadísticas{% endblock %}
+{% block topbar_title %}📊 Estadísticas{% endblock %}
+{% block topbar_sub %}Cómo va tu negocio según los datos reales{% endblock %}
+
+{% block content %}
+
+<!-- ================= RESUMEN ================= -->
+<section class="grid grid-4" style="margin-bottom:22px">
+  <div class="stat">
+    <div class="stat-top">
+      <span class="stat-label">Ventas registradas</span>
+      <span class="stat-icon">🛍️</span>
+    </div>
+    <div class="stat-value" id="statSales">—</div>
+    <div class="stat-foot" id="statSalesFoot">Cargando...</div>
+  </div>
+  <div class="stat mint">
+    <div class="stat-top">
+      <span class="stat-label">Unidades vendidas</span>
+      <span class="stat-icon">📦</span>
+    </div>
+    <div class="stat-value" id="statUnits">—</div>
+    <div class="stat-foot" id="statUnitsFoot">Cargando...</div>
+  </div>
+  <div class="stat gold">
+    <div class="stat-top">
+      <span class="stat-label">Ingresos totales</span>
+      <span class="stat-icon">💵</span>
+    </div>
+    <div class="stat-value" id="statRevenue">—</div>
+    <div class="stat-foot" id="statRevenueFoot">Cargando...</div>
+  </div>
+  <div class="stat rose">
+    <div class="stat-top">
+      <span class="stat-label">Ganancia total</span>
+      <span class="stat-icon">💰</span>
+    </div>
+    <div class="stat-value" id="statProfit">—</div>
+    <div class="stat-foot" id="statProfitFoot">Cargando...</div>
+  </div>
+</section>
+
+<!-- Aviso sin datos -->
+<div class="notice info" id="noStats" style="display:none;margin-bottom:20px">
+  <span>📊</span>
+  <div>
+    <strong>Todavía no hay suficientes datos para mostrar estadísticas.</strong><br>
+    Cuando registres ventas, aquí verás gráficos de ventas, productos más vendidos,
+    reparto por categoría y el valor de tu inventario.
+  </div>
+</div>
+
+<!-- ================= GRAFICOS ================= -->
+<div class="grid grid-2" style="margin-bottom:20px">
+
+  <!-- Ventas por dia -->
+  <div class="card">
+    <div class="card-head">
+      <div>
+        <h2>📈 Ventas por día</h2>
+        <p>Últimos 7 días · 💜 ingresos / 💛 ganancia</p>
+      </div>
+    </div>
+    <div class="chart-box" id="statsChart">
+      <div class="skeleton" style="height:210px"></div>
+    </div>
+  </div>
+
+  <!-- Reparto por categoria -->
+  <div class="card">
+    <div class="card-head">
+      <div>
+        <h2>🎨 Ventas por categoría</h2>
+        <p>En qué gastan tus clientas</p>
+      </div>
+    </div>
+    <div class="donut-wrap" id="categoryDonut">
+      <div class="skeleton" style="height:168px;width:168px;border-radius:50%"></div>
+    </div>
+  </div>
+</div>
+
+<div class="grid grid-2">
+
+  <!-- Top productos -->
+  <div class="card">
+    <div class="card-head">
+      <div>
+        <h2>🏆 Top productos</h2>
+        <p>Los más vendidos por unidades</p>
+      </div>
+    </div>
+    <div id="statsTopProducts">
+      <div class="skeleton" style="height:140px"></div>
+    </div>
+  </div>
+
+  <!-- Valor del inventario -->
+  <div class="card">
+    <div class="card-head">
+      <div>
+        <h2>📦 Valor del inventario</h2>
+        <p>Cuánto tienes invertido y cuánto puedes ganar</p>
+      </div>
+      <a href="/productos" class="btn btn-soft btn-sm">Ver productos</a>
+    </div>
+    <div id="inventoryValue">
+      <div class="skeleton" style="height:120px"></div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/stats.js') }}"></script>
+{% endblock %}

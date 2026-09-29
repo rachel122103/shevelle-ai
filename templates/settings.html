@@ -1,0 +1,135 @@
+{% extends "base.html" %}
+{% block page_title %}Configuración{% endblock %}
+{% block topbar_title %}⚙️ Configuración{% endblock %}
+{% block topbar_sub %}Ajusta tu negocio y la inteligencia artificial{% endblock %}
+
+{% block content %}
+
+<div class="grid grid-2" style="align-items:start">
+
+  <!-- ================= AJUSTES DEL NEGOCIO ================= -->
+  <div class="card">
+    <div class="card-head">
+      <div>
+        <h2>🏪 Mi negocio</h2>
+        <p>Estos datos aparecen en toda la aplicación</p>
+      </div>
+    </div>
+
+    <form id="settingsForm">
+      <div class="field">
+        <label for="setBusinessName">Nombre del negocio</label>
+        <input type="text" class="input" id="setBusinessName" placeholder="Shevelle Beauty">
+      </div>
+
+      <div class="field">
+        <label for="setOwner">Dueña / responsable</label>
+        <input type="text" class="input" id="setOwner" placeholder="Tu nombre">
+      </div>
+
+      <div class="form-grid">
+        <div class="field">
+          <label for="setCurrency">Moneda</label>
+          <input type="text" class="input" id="setCurrency" placeholder="RD$" maxlength="6">
+          <span class="hint">Se muestra junto a todos los precios.</span>
+        </div>
+
+        <div class="field">
+          <label for="setThreshold">Alerta de inventario bajo</label>
+          <input type="number" class="input" id="setThreshold" min="0" step="1" value="3">
+          <span class="hint">Aviso cuando queden esta cantidad o menos.</span>
+        </div>
+      </div>
+
+      <div class="field">
+        <label class="switch">
+          <input type="checkbox" id="setAiEnabled" checked>
+          <span class="track"></span>
+          <span style="font-weight:600;font-size:.88rem">Usar la inteligencia artificial</span>
+        </label>
+        <span class="hint">Si la apagas, el asistente sigue funcionando con datos reales de tu base de datos.</span>
+      </div>
+
+      <button type="submit" class="btn btn-primary">💾 Guardar configuración</button>
+    </form>
+  </div>
+
+  <div class="stack">
+
+    <!-- ================= ESTADO DE LA IA ================= -->
+    <div class="card">
+      <div class="card-head">
+        <div>
+          <h2>🤖 Inteligencia artificial</h2>
+          <p>Estado de la conexión con la IA</p>
+        </div>
+      </div>
+
+      <div id="aiStatusBox">
+        <div class="skeleton" style="height:70px"></div>
+      </div>
+
+      <hr class="divider">
+
+      <h3 style="font-size:.92rem;margin-bottom:9px">¿Cómo configuro la IA?</h3>
+      <ol style="font-size:.85rem;padding-left:20px;color:var(--gris-suave);line-height:1.85">
+        <li>Abre el archivo <code>.env</code> de la carpeta del proyecto.</li>
+        <li>Escribe tu clave: <code>AI_API_KEY=tu_clave_aqui</code></li>
+        <li>Opcionalmente cambia el modelo: <code>AI_MODEL=gpt-4o-mini</code></li>
+        <li>Cierra y vuelve a iniciar el servidor con <code>python app.py</code>.</li>
+      </ol>
+
+      <div class="code-block" style="margin-top:12px"># Archivo .env
+AI_API_KEY=sk-tu_clave_de_la_api_aqui
+AI_MODEL=gpt-4o-mini
+AI_API_URL=https://api.openai.com/v1/chat/completions</div>
+
+      <div class="notice info" style="margin-top:12px">
+        <span>🔒</span>
+        <div>Tu clave <b>nunca</b> se muestra en la página ni se envía al navegador.
+        Solo Python la utiliza. Además, el archivo <code>.env</code> está en <code>.gitignore</code>.</div>
+      </div>
+    </div>
+
+    <!-- ================= DEMO DATA ================= -->
+    <div class="card">
+      <div class="card-head">
+        <div>
+          <h2>🗃️ Datos de demostración</h2>
+          <p>Productos de ejemplo que se crean al iniciar</p>
+        </div>
+      </div>
+      <p style="font-size:.85rem;margin-bottom:14px">
+        Shevelle AI incluye productos de ejemplo (Aretes Mariposa, Aretes Dorados,
+        Pinza Mariposa, Collar Minimalista y más) para que puedas probar la aplicación
+        sin tener que escribir nada. <b>Puedes borrarlos cuando quieras</b> desde la
+        sección Productos.
+      </p>
+      <div class="row">
+        <span class="tag" id="demoCount">—</span>
+        <div class="spacer"></div>
+        <button class="btn btn-ghost btn-sm" id="resetDemoBtn">↻ Restaurar datos de demostración</button>
+      </div>
+    </div>
+
+    <!-- ================= ACERCA DE ================= -->
+    <div class="card">
+      <div class="card-head">
+        <h2>🦋 Acerca de Shevelle AI</h2>
+      </div>
+      <div class="kv"><span>Versión</span><span>1.0</span></div>
+      <div class="kv"><span>Tecnología backend</span><span>Python + Flask</span></div>
+      <div class="kv"><span>Base de datos</span><span>SQLite</span></div>
+      <div class="kv"><span>Frontend</span><span>HTML5, CSS3, JavaScript</span></div>
+      <div class="kv"><span>Modo de la IA</span><span id="aboutMode">—</span></div>
+      <div class="kv"><span>Moneda</span><span id="aboutCurrency">{{ currency }}</span></div>
+    </div>
+
+  </div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/settings.js') }}"></script>
+{% endblock %}

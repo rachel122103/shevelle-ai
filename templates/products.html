@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+{% block page_title %}Productos{% endblock %}
+{% block topbar_title %}📦 Productos{% endblock %}
+{% block topbar_sub %}Agrega, edita y controla tu inventario{% endblock %}
+
+{% block content %}
+
+<div class="card" style="margin-bottom:20px">
+  <div class="row">
+    <div class="search-box">
+      <input type="search" class="input" id="searchInput" placeholder="Buscar por nombre, categoría o descripción...">
+    </div>
+
+    <select class="select" id="categoryFilter" style="width:auto;min-width:170px">
+      <option value="Todas">Todas las categorías</option>
+      <option>Accesorios</option>
+      <option>Aretes</option>
+      <option>Collares</option>
+      <option>Pulseras</option>
+      <option>Pinzas</option>
+      <option>Maquillaje</option>
+      <option>Skincare</option>
+      <option>Otros</option>
+    </select>
+
+    <select class="select" id="stockFilter" style="width:auto;min-width:160px">
+      <option value="">Todo el inventario</option>
+      <option value="available">Solo disponibles</option>
+      <option value="low">⚠️ Inventario bajo</option>
+      <option value="out">🔴 Agotados</option>
+    </select>
+
+    <select class="select" id="orderSelect" style="width:auto;min-width:155px">
+      <option value="recent">Más recientes</option>
+      <option value="name">Nombre (A-Z)</option>
+      <option value="price_high">Precio: mayor a menor</option>
+      <option value="price_low">Precio: menor a mayor</option>
+      <option value="stock_low">Menos existencias</option>
+    </select>
+
+    <button class="btn btn-primary" id="newProductBtn">➕ Agregar producto</button>
+  </div>
+</div>
+
+<div class="row" style="margin-bottom:16px">
+  <span class="tag" id="resultCount">0 productos</span>
+  <div class="spacer"></div>
+  <span class="tag gold" id="totalStock">0 unidades en total</span>
+</div>
+
+<div class="grid grid-3" id="productsGrid">
+  <div class="card"><div class="skeleton" style="height:230px"></div></div>
+  <div class="card"><div class="skeleton" style="height:230px"></div></div>
+  <div class="card"><div class="skeleton" style="height:230px"></div></div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/products.js') }}"></script>
+{% endblock %}

@@ -1,0 +1,109 @@
+{% extends "base.html" %}
+{% block page_title %}Asistente IA{% endblock %}
+{% block topbar_title %}🤖 Shevelle AI{% endblock %}
+{% block topbar_sub %}Tu asistente inteligente para hacer crecer tu negocio{% endblock %}
+
+{% block content %}
+
+{% if not ai_configured %}
+<div class="notice" style="margin-bottom:18px">
+  <span>⚙️</span>
+  <div>
+    <strong>La inteligencia artificial todavía no está configurada.</strong><br>
+    La aplicación sigue funcionando: el asistente responde usando los
+    <b>datos reales</b> de tu base de datos (productos, ventas y ganancias).
+    Para activar la IA de verdad, edita el archivo <code>.env</code>, escribe
+    <code>AI_API_KEY=tu_clave_aqui</code> y reinicia el servidor.
+  </div>
+</div>
+{% endif %}
+
+<div class="chat-layout">
+
+  <!-- ================= CHAT ================= -->
+  <div class="chat-box">
+    <div class="chat-head">
+      <div class="avatar">🦋</div>
+      <div>
+        <h3>{% if ai_configured %}Asistente Shevelle AI{% else %}Asistente Shevelle AI (modo demostración){% endif %}</h3>
+        <p id="chatModeLabel">
+          {% if ai_configured %}Conectado a la IA{% else %}Respuestas con datos reales de tu base de datos{% endif %}
+        </p>
+      </div>
+    </div>
+
+    <div class="chat-messages" id="chatMessages"></div>
+
+    <div class="chat-input">
+      <textarea class="textarea" id="chatInput" rows="1"
+        placeholder="Escribe tu pregunta, por ejemplo: ¿Qué productos tengo disponibles?"></textarea>
+      <button class="btn btn-primary" id="chatSend" style="height:46px">Enviar ➤</button>
+    </div>
+  </div>
+
+  <!-- ================= AYUDA LATERAL ================= -->
+  <div class="stack">
+    <div class="card">
+      <div class="card-head">
+        <h2>💡 Pregúntame</h2>
+      </div>
+      <div class="chat-suggestions" style="margin-top:0">
+        <button class="suggestion" data-question="¿Qué productos tengo disponibles?">🛍️ ¿Qué productos tengo?</button>
+        <button class="suggestion" data-question="¿Qué productos tienen inventario bajo?">⚠️ ¿Qué está por acabarse?</button>
+        <button class="suggestion" data-question="¿Cuánto estoy ganando este mes?">💰 ¿Cuánto estoy ganando?</button>
+        <button class="suggestion" data-question="¿Qué puedo publicar hoy para promocionar mis aretes?">📱 ¿Qué publico hoy?</button>
+        <button class="suggestion" data-question="¿Cómo respondo a un cliente que pide precio?">💬 Respuesta a clientes</button>
+        <button class="suggestion" data-question="¿Qué promociones me recomiendas para vender más?">🎁 Promociones</button>
+        <button class="suggestion" data-question="Analiza mi negocio y dame consejos">📊 Analiza mi negocio</button>
+        <button class="suggestion" data-question="Dame ideas para un TikTok de joyería">🎵 Ideas para TikTok</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-head">
+        <h2>🤖 ¿Qué puede hacer?</h2>
+      </div>
+
+      <div style="margin-bottom:14px">
+        <span class="tag">Ventas</span>
+        <p style="font-size:.82rem;margin-top:5px">Ideas para vender, promociones y cómo atraer clientas nuevas.</p>
+      </div>
+      <hr class="divider">
+      <div style="margin-bottom:14px">
+        <span class="tag ok">Atención al cliente</span>
+        <p style="font-size:.82rem;margin-top:5px">Respuestas a preguntas frecuentes usando tus precios y stock reales.</p>
+      </div>
+      <hr class="divider">
+      <div style="margin-bottom:14px">
+        <span class="tag gold">Marketing</span>
+        <p style="font-size:.82rem;margin-top:5px">Captions, ideas de TikTok, promociones y nombres para productos.</p>
+      </div>
+      <hr class="divider">
+      <div>
+        <span class="tag info">Negocio</span>
+        <p style="font-size:.82rem;margin-top:5px">Análisis de ventas, ganancias y alertas de inventario.</p>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-head">
+        <h2>🗄️ Datos reales</h2>
+      </div>
+      <p style="font-size:.82rem;margin-bottom:12px">
+        La IA consulta tu base de datos SQLite antes de responder, por eso
+        <b>nunca inventa</b> productos, precios ni cifras.
+      </p>
+      <div id="aiContextBox">
+        <div class="kv"><span>Productos registrados</span><span id="ctxProducts">—</span></div>
+        <div class="kv"><span>Ventas registradas</span><span id="ctxSales">—</span></div>
+        <div class="kv"><span>Modo de la IA</span><span id="ctxMode">—</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/chat.js') }}"></script>
+{% endblock %}

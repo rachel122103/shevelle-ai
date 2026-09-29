@@ -1,0 +1,107 @@
+{% extends "base.html" %}
+{% block page_title %}Crear contenido{% endblock %}
+{% block topbar_title %}📱 Crear contenido{% endblock %}
+{% block topbar_sub %}Genera publicaciones para tus redes sociales{% endblock %}
+
+{% block content %}
+
+{% if not ai_configured %}
+<div class="notice" style="margin-bottom:18px">
+  <span>⚙️</span>
+  <div>
+    <strong>La IA no está configurada, pero puedes seguir usándola.</strong><br>
+    El generador trabaja en <b>modo demostración</b>: crea textos usando plantillas
+    inteligentes con los <b>datos reales</b> de cada producto (nombre, categoría,
+    precio y cantidad disponible). Edita el archivo <code>.env</code> y agrega
+    <code>AI_API_KEY</code> para que la IA escriba los textos por ti.
+  </div>
+</div>
+{% endif %}
+
+<div class="grid grid-2" style="align-items:start">
+
+  <!-- ================= FORMULARIO ================= -->
+  <div class="card">
+    <div class="card-head">
+      <div>
+        <h2>✨ Generador de contenido</h2>
+        <p>Completa las opciones y presiona el botón</p>
+      </div>
+    </div>
+
+    <form id="contentForm">
+      <div class="field">
+        <label for="contentProduct">Producto *</label>
+        <select class="select" id="contentProduct">
+          <option value="">Cargando productos...</option>
+        </select>
+        <span class="hint" id="contentProductHint">Solo se muestran productos de tu base de datos.</span>
+      </div>
+
+      <div class="field">
+        <label>Plataforma *</label>
+        <div class="chips" id="platformChips">
+          <button type="button" class="chip active" data-value="Instagram">📷 Instagram</button>
+          <button type="button" class="chip" data-value="TikTok">🎵 TikTok</button>
+          <button type="button" class="chip" data-value="WhatsApp">💬 WhatsApp</button>
+        </div>
+      </div>
+
+      <div class="field">
+        <label>Tipo de contenido *</label>
+        <div class="chips" id="typeChips">
+          <button type="button" class="chip active" data-value="Publicacion">📝 Publicación</button>
+          <button type="button" class="chip" data-value="Historia">📲 Historia</button>
+          <button type="button" class="chip" data-value="Video">🎬 Video</button>
+          <button type="button" class="chip" data-value="Promocion">🎁 Promoción</button>
+          <button type="button" class="chip" data-value="Descripcion de producto">📋 Descripción</button>
+        </div>
+      </div>
+
+      <div class="field">
+        <label>Tono *</label>
+        <div class="chips" id="toneChips">
+          <button type="button" class="chip active" data-value="Elegante">👑 Elegante</button>
+          <button type="button" class="chip" data-value="Casual">🙂 Casual</button>
+          <button type="button" class="chip" data-value="Femenino">🦋 Femenino</button>
+          <button type="button" class="chip" data-value="Profesional">💼 Profesional</button>
+          <button type="button" class="chip" data-value="Juvenil">✨ Juvenil</button>
+        </div>
+      </div>
+
+      <button type="submit" class="btn btn-gold btn-lg btn-block" id="generateBtn">
+        ✨ Generar contenido
+      </button>
+    </form>
+  </div>
+
+  <!-- ================= RESULTADO ================= -->
+  <div class="card">
+    <div class="card-head">
+      <div>
+        <h2>📄 Resultado</h2>
+        <p id="resultMeta">Aquí aparecerá el contenido generado</p>
+      </div>
+      <div class="row" id="resultActions" style="display:none">
+        <button class="btn btn-soft btn-sm" id="copyBtn">📋 Copiar texto</button>
+        <button class="btn btn-ghost btn-sm" id="regenerateBtn">🔄 Otro</button>
+      </div>
+    </div>
+
+    <div id="contentResult">
+      <div class="empty">
+        <div class="big">🦋</div>
+        <h3>Aún no has generado nada</h3>
+        <p>Selecciona un producto, elige la plataforma y el tono, y presiona
+           <b>Generar contenido</b>. Recibirás el texto principal, el llamado a la
+           acción y los hashtags.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/content.js') }}"></script>
+{% endblock %}

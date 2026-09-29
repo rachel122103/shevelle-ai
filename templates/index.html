@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+{% block page_title %}Inicio{% endblock %}
+{% block topbar_title %}Inicio{% endblock %}
+{% block topbar_sub %}Resumen de tu negocio hoy{% endblock %}
+
+{% block content %}
+
+<!-- ========================= HERO ========================= -->
+<section class="hero">
+  <span class="hero-butterfly">🦋</span>
+  <h1>🦋 {{ title }} <span class="gold">·</span> {{ business }}</h1>
+  <p>{{ tagline }}. Aqui tienes un resumen rapido de como va tu negocio.</p>
+  <div class="hero-stats">
+    <div><strong id="heroSales">0</strong>Ventas de hoy</div>
+    <div><strong id="heroProfit">0.00</strong>Ganancia de hoy</div>
+    <div><strong id="heroProducts">0</strong>Productos</div>
+    <div><strong id="heroAlerts">0</strong>Alertas de inventario</div>
+  </div>
+</section>
+
+<!-- ================= TARJETAS PRINCIPALES ================= -->
+<section class="grid grid-4" style="margin-bottom:22px" id="dashboardCards">
+  {% for i in range(4) %}
+  <div class="stat">
+    <div class="stat-top"><span class="stat-label">Cargando...</span></div>
+    <div class="stat-value">—</div>
+    <div class="stat-foot">&nbsp;</div>
+  </div>
+  {% endfor %}
+</section>
+
+<div class="grid grid-2">
+
+  <!-- ================= ULTIMAS VENTAS ================= -->
+  <div class="card">
+    <div class="card-head">
+      <div>
+        <h2>🛒 Últimas ventas</h2>
+        <p>Las 5 ventas más recientes</p>
+      </div>
+      <a href="/ventas" class="btn btn-soft btn-sm">Ver todas</a>
+    </div>
+    <div id="recentSales">
+      <div class="skeleton" style="height:44px;margin-bottom:8px"></div>
+      <div class="skeleton" style="height:44px;margin-bottom:8px"></div>
+      <div class="skeleton" style="height:44px"></div>
+    </div>
+  </div>
+
+  <!-- ================= ALERTAS DE INVENTARIO ================= -->
+  <div class="card">
+    <div class="card-head">
+      <div>
+        <h2>⚠️ Alertas de inventario</h2>
+        <p id="alertThreshold">Productos con pocas unidades</p>
+      </div>
+      <a href="/productos?stock=low" class="btn btn-soft btn-sm">Reponer</a>
+    </div>
+    <div id="stockAlerts"></div>
+  </div>
+</div>
+
+<!-- ================= TOP PRODUCTOS ================= -->
+<div class="card" style="margin-top:20px">
+  <div class="card-head">
+    <div>
+      <h2>🏆 Productos más vendidos</h2>
+      <p>Según las ventas registradas en la base de datos</p>
+    </div>
+    <a href="/estadisticas" class="btn btn-ghost btn-sm">📊 Ver estadísticas</a>
+  </div>
+  <div id="topProducts"></div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
+{% endblock %}

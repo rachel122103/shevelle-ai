@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block page_title %}{{ title }}{% endblock %} | {{ title }}</title>
+  <meta name="description" content="Shevelle AI - Asistente inteligente para administrar un negocio de accesorios y belleza.">
+  <link rel="icon" type="image/svg+xml" href="{{ url_for('static', filename='images/butterfly.svg') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body data-currency="{{ currency }}">
+
+{# ---------- Icono de mariposa (SVG en linea, no necesita internet) ---------- #}
+{% macro butterfly(size=26) -%}
+<svg viewBox="0 0 24 24" width="{{ size }}" height="{{ size }}" fill="none" aria-hidden="true">
+  <path d="M12 5.5c-1.2-2-3.4-3-5.6-2.9C3.3 2.8 1.6 5 2 7.7c.4 2.6 2.7 4 4.6 5.3 1.7 1.2 3.7 2.4 5.4 4.5 1.7-2.1 3.7-3.3 5.4-4.5 1.9-1.3 4.2-2.7 4.6-5.3.4-2.7-1.3-4.9-4.4-5.1-2.2-.1-4.4.9-5.6 2.9Z"
+        stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+  <path d="M12 5.5V17" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+  <path d="M12 6.2c-.6-1.4-1.6-2.4-2.8-3M12 6.2c.6-1.4 1.6-2.4 2.8-3"
+        stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
+</svg>
+{%- endmacro %}
+
+{# ================= BARRA LATERAL ================= #}
+<div class="app">
+
+  <aside class="sidebar" id="sidebar">
+    <div class="brand">
+      <div class="brand-logo" style="color:#fff">{{ butterfly(26) }}</div>
+      <div class="brand-text">
+        <h1>🦋 Shevelle AI</h1>
+        <span>Asistente de negocio</span>
+      </div>
+    </div>
+
+    <nav class="nav">
+      <div class="nav-label">Principal</div>
+      <a class="nav-item {% if active == 'inicio' %}active{% endif %}" href="{{ url_for('index') }}">
+        <span class="ico">🏠</span> Inicio
+      </a>
+      <a class="nav-item {% if active == 'asistente' %}active{% endif %}" href="/asistente">
+        <span class="ico">🤖</span> Asistente IA
+      </a>
+
+      <div class="nav-label">Mi negocio</div>
+      <a class="nav-item {% if active == 'productos' %}active{% endif %}" href="/productos">
+        <span class="ico">📦</span> Productos
+      </a>
+      <a class="nav-item {% if active == 'ventas' %}active{% endif %}" href="/ventas">
+        <span class="ico">🛒</span> Ventas
+      </a>
+      <a class="nav-item {% if active == 'ganancias' %}active{% endif %}" href="/ganancias">
+        <span class="ico">💰</span> Ganancias
+      </a>
+
+      <div class="nav-label">Marketing</div>
+      <a class="nav-item {% if active == 'contenido' %}active{% endif %}" href="/contenido">
+        <span class="ico">📱</span> Contenido
+      </a>
+      <a class="nav-item {% if active == 'recomendador' %}active{% endif %}" href="/recomendador">
+        <span class="ico">✨</span> Encuentra tu producto
+      </a>
+
+      <div class="nav-label">Analisis</div>
+      <a class="nav-item {% if active == 'estadisticas' %}active{% endif %}" href="/estadisticas">
+        <span class="ico">📊</span> Estadísticas
+      </a>
+      <a class="nav-item {% if active == 'configuracion' %}active{% endif %}" href="/configuracion">
+        <span class="ico">⚙️</span> Configuración
+      </a>
+    </nav>
+
+    <div class="sidebar-foot">
+      <span class="dot">●</span> {{ business }}<br>
+      <small>v1.0 · {{ currency }}</small>
+    </div>
+  </aside>
+
+  <div class="overlay" id="overlay"></div>
+
+  {# ================= CONTENIDO ================= #}
+  <div class="main">
+    <header class="topbar">
+      <button class="burger" id="burger" aria-label="Abrir menu">☰</button>
+
+      <div class="topbar-title">
+        <h2>{% block topbar_title %}Panel de control{% endblock %}</h2>
+        <p>{% block topbar_sub %}{{ tagline }}{% endblock %}</p>
+      </div>
+
+      <div class="topbar-right">
+        {% if ai_configured %}
+          <span class="badge-ai"><span class="pulse"></span> IA conectada</span>
+        {% else %}
+          <span class="badge-ai off" title="Configura AI_API_KEY en el archivo .env">
+            <span class="pulse"></span> IA sin configurar
+          </span>
+        {% endif %}
+        <div class="avatar" title="{{ business }}">SB</div>
+      </div>
+    </header>
+
+    <main class="content">
+      {% block content %}{% endblock %}
+
+      <p class="footer-note">
+        🦋 <strong class="gold">Shevelle AI</strong> — {{ tagline }}
+      </p>
+    </main>
+  </div>
+</div>
+
+{# ================= NOTIFICACIONES ================= #}
+<div id="toasts"></div>
+
+{# ================= MODAL DE PRODUCTO ================= #}
+<div class="modal" id="productModal">
+  <div class="modal-box">
+    <div class="modal-head">
+      <h3 id="productModalTitle">➕ Agregar producto</h3>
+      <button class="close-x" data-close-modal="productModal">&times;</button>
+    </div>
+    <form id="productForm">
+      <div class="modal-body">
+        <input type="hidden" id="productId">
+
+        <div class="form-grid">
+          <div class="field full">
+            <label for="productName">Nombre del producto *</label>
+            <input type="text" class="input" id="productName" placeholder="Ej: Aretes Mariposa" required>
+          </div>
+
+          <div class="field">
+            <label for="productCategory">Categoría</label>
+            <select class="select" id="productCategory">
+              <option>Accesorios</option>
+              <option>Aretes</option>
+              <option>Collares</option>
+              <option>Pulseras</option>
+              <option>Pinzas</option>
+              <option>Maquillaje</option>
+              <option>Skincare</option>
+              <option>Otros</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="productStock">Cantidad en inventario *</label>
+            <input type="number" class="input" id="productStock" min="0" step="1" placeholder="0" required>
+          </div>
+
+          <div class="field">
+            <label for="productPurchase">Precio de compra *</label>
+            <input type="number" class="input" id="productPurchase" min="0" step="0.01" placeholder="0.00" required>
+            <span class="hint">Lo que te cuesta a ti.</span>
+          </div>
+
+          <div class="field">
+            <label for="productSale">Precio de venta *</label>
+            <input type="number" class="input" id="productSale" min="0" step="0.01" placeholder="0.00" required>
+            <span class="hint">Lo que cobra la clienta.</span>
+          </div>
+
+          <div class="field full">
+            <label for="productDescription">Descripción</label>
+            <textarea class="textarea" id="productDescription" placeholder="Describe el material, el estilo, para que occasion es..."></textarea>
+          </div>
+
+          <div class="field full">
+            <label for="productImage">Imagen (opcional)</label>
+            <input type="file" class="input" id="productImage" accept="image/png,image/jpeg,image/gif,image/webp,image/svg+xml">
+            <span class="hint">JPG, PNG, GIF, WEBP o SVG. Maximo 4 MB.</span>
+          </div>
+        </div>
+
+        <div class="calc-box" id="productMarginBox" style="display:none">
+          <div class="calc-row">
+            <span>Ganancia por unidad
+              <small class="formula" id="marginFormula">venta - compra</small>
+            </span>
+            <strong id="marginValue" style="color:var(--lila-oscuro)">0.00</strong>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-foot">
+        <button type="button" class="btn btn-ghost" data-close-modal="productModal">Cancelar</button>
+        <button type="submit" class="btn btn-primary" id="productSubmit">💾 Guardar producto</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+{# ================= MODAL DE CONFIRMACION ================= #}
+<div class="modal" id="confirmModal">
+  <div class="modal-box" style="max-width:440px">
+    <div class="modal-head">
+      <h3 id="confirmTitle">Confirmar</h3>
+      <button class="close-x" data-close-modal="confirmModal">&times;</button>
+    </div>
+    <div class="modal-body">
+      <p id="confirmText" style="color:var(--gris-texto)"></p>
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-ghost" data-close-modal="confirmModal">Cancelar</button>
+      <button class="btn btn-danger" id="confirmAccept">Sí, continuar</button>
+    </div>
+  </div>
+</div>
+
+<script src="{{ url_for('static', filename='js/app.js') }}"></script>
+{% block scripts %}{% endblock %}
+</body>
+</html>

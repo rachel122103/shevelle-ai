@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block page_title %}Página no encontrada{% endblock %}
+{% block topbar_title %}Página no encontrada{% endblock %}
+{% block topbar_sub %}Esta dirección no existe{% endblock %}
+
+{% block content %}
+<div class="card">
+  <div class="empty">
+    <div class="big">🦋</div>
+    <h3>No encontramos esta página</h3>
+    <p>La dirección que buscas no existe en Shevelle AI. Vuelve al inicio o usa el
+       menú de la izquierda para continuar.</p>
+    <div class="row" style="justify-content:center">
+      <a href="{{ url_for('index') }}" class="btn btn-primary">🏠 Ir al inicio</a>
+      <a href="/asistente" class="btn btn-ghost">🤖 Ir al asistente</a>
+    </div>
+  </div>
+</div>
+{% endblock %}

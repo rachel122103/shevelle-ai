@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+{% block page_title %}Encuentra tu producto{% endblock %}
+{% block topbar_title %}✨ Encuentra tu producto{% endblock %}
+{% block topbar_sub %}Ayuda a tus clientas a elegir lo ideal{% endblock %}
+
+{% block content %}
+
+<div class="wizard" id="wizard">
+
+  <!-- ================= PASO 1 ================= -->
+  <div class="wizard-step active" data-step="0">
+    <h2 class="wizard-q">{{ quiz.steps[0].question }}</h2>
+    <p class="wizard-help">Esta herramienta recomienda productos <b>reales</b> de tu inventario.</p>
+    <div class="options-grid">
+      {% for option in quiz.steps[0].options %}
+      <button type="button" class="option-card" data-step="0" data-value="{{ option.id }}">
+        <span class="big">{{ option.icon }}</span>{{ option.label }}
+      </button>
+      {% endfor %}
+    </div>
+  </div>
+
+  <!-- ================= PASO 2 ================= -->
+  <div class="wizard-step" data-step="1">
+    <h2 class="wizard-q">{{ quiz.steps[1].question }}</h2>
+    <p class="wizard-help">Con esto armo mi recomendación personalizada.</p>
+    <div class="options-grid">
+      {% for option in quiz.steps[1].options %}
+      <button type="button" class="option-card" data-step="1" data-value="{{ option.id }}">
+        <span class="big">{{ option.icon }}</span>{{ option.label }}
+      </button>
+      {% endfor %}
+    </div>
+  </div>
+
+  <!-- ================= RESULTADO ================= -->
+  <div class="wizard-step" data-step="2">
+    <div class="card" style="margin-bottom:20px">
+      <div class="card-head">
+        <div>
+          <h2>🎀 Nuestra recomendación</h2>
+          <p id="recoSubtitle">Basado en lo que la clienta está buscando</p>
+        </div>
+        <button class="btn btn-ghost btn-sm" id="restartWizard">↻ Empezar de nuevo</button>
+      </div>
+      <div class="reco-grid" id="recoGrid">
+        <div class="skeleton" style="height:290px"></div>
+        <div class="skeleton" style="height:290px"></div>
+        <div class="skeleton" style="height:290px"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/recommend.js') }}"></script>
+{% endblock %}

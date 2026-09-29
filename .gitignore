@@ -1,0 +1,39 @@
+# ============================================================
+# Shevelle AI - Archivos que NO se deben subir a Git
+# ============================================================
+
+# Variables de entorno (CONTIENEN LA API KEY - NUNCA SUBIR)
+.env
+.env.local
+*.env
+
+# Base de datos
+database/*.db
+database/*.sqlite
+database/*.sqlite3
+
+# Imagenes subidas por la usuaria
+uploads/*
+!uploads/.gitkeep
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.pyo
+venv/
+env/
+ENV/
+.venv/
+env.bat
+env.ps1
+
+# Editores
+.vscode/
+.idea/
+*.swp
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log

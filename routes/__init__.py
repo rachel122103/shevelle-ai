@@ -1,0 +1,1 @@
+"""Blueprints de Shevelle AI."""

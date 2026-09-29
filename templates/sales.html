@@ -1,0 +1,123 @@
+{% extends "base.html" %}
+{% block page_title %}Ventas{% endblock %}
+{% block topbar_title %}🛒 Ventas{% endblock %}
+{% block topbar_sub %}Registra las ventas de tu negocio{% endblock %}
+
+{% block content %}
+
+<div class="grid grid-2" style="align-items:start">
+
+  <!-- ================= FORMULARIO DE VENTA ================= -->
+  <div class="card">
+    <div class="card-head">
+      <div>
+        <h2>🛒 Registrar venta</h2>
+        <p>Selecciona el producto y la cantidad</p>
+      </div>
+    </div>
+
+    <form id="saleForm">
+      <!-- Paso 1: producto -->
+      <div class="field">
+        <label for="productSearch">1. Producto *</label>
+        <div class="product-picker">
+          <input type="text" class="input" id="productSearch" placeholder="Escribe el nombre del producto..." autocomplete="off">
+          <input type="hidden" id="saleProductId">
+          <div class="picker-list" id="productList"></div>
+        </div>
+        <span class="hint" id="selectedProductHint">Ningún producto seleccionado todavía.</span>
+      </div>
+
+      <div class="form-grid">
+        <!-- Paso 2: cantidad -->
+        <div class="field">
+          <label for="saleQuantity">2. Cantidad *</label>
+          <input type="number" class="input" id="saleQuantity" min="1" step="1" value="1" required>
+        </div>
+
+        <!-- Paso 3: precio -->
+        <div class="field">
+          <label for="salePrice">3. Precio de venta</label>
+          <input type="number" class="input" id="salePrice" min="0" step="0.01" placeholder="0.00">
+          <span class="hint">Déjalo vacío para usar el precio del producto.</span>
+        </div>
+
+        <div class="field">
+          <label for="salePayment">Método de pago</label>
+          <select class="select" id="salePayment">
+            <option>Efectivo</option>
+            <option>Tarjeta</option>
+            <option>Transferencia</option>
+            <option>Otro</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label for="saleCustomer">Cliente (opcional)</label>
+          <input type="text" class="input" id="saleCustomer" placeholder="Nombre de la clienta">
+        </div>
+      </div>
+
+      <!-- Calculo automatico -->
+      <div class="calc-box" style="margin:6px 0 18px">
+        <div class="calc-row">
+          <span>Total <small class="formula" id="formulaTotal">precio x cantidad</small></span>
+          <strong id="calcTotal">{{ currency }} 0.00</strong>
+        </div>
+        <div class="calc-row">
+          <span>Ganancia <small class="formula" id="formulaProfit">(venta - compra) x cantidad</small></span>
+          <strong id="calcProfit" style="color:var(--exito)">{{ currency }} 0.00</strong>
+        </div>
+        <div class="calc-row total">
+          <span>Inventario disponible</span>
+          <span id="calcStock">—</span>
+        </div>
+      </div>
+
+      <button type="submit" class="btn btn-primary btn-lg btn-block" id="saleSubmit" disabled>
+        ✅ Registrar venta
+      </button>
+    </form>
+  </div>
+
+  <!-- ================= HISTORIAL ================= -->
+  <div class="card">
+    <div class="card-head">
+      <div>
+        <h2>📋 Historial de ventas</h2>
+        <p id="salesCount">Cargando...</p>
+      </div>
+      <button class="btn btn-ghost btn-sm" id="refreshSales">🔄 Actualizar</button>
+    </div>
+
+    <div class="row" style="margin-bottom:14px">
+      <span class="tag ok">Hoy: <b id="todaySales">0</b></span>
+      <span class="tag">Ganancia: <b id="todayProfit">{{ currency }} 0.00</b></span>
+    </div>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Producto</th>
+            <th class="num">Cant.</th>
+            <th class="num">Precio</th>
+            <th class="num">Total</th>
+            <th class="num">Ganancia</th>
+            <th>Fecha</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody id="salesTable">
+          <tr><td colspan="7"><div class="skeleton" style="height:38px"></div></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/sales.js') }}"></script>
+{% endblock %}
